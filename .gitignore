@@ -1,0 +1,12 @@
+# --- Frontend (React/Node) ---
+WcpFrontend/node_modules/
+WcpFrontend/.env
+
+# --- Backend (ASP.NET Core) ---
+WcpBackend/bin/
+WcpBackend/obj/
+WcpBackend/appsettings.Development.json
+
+
+# --- Mac/Windows OS Files ---
+.DS_Store

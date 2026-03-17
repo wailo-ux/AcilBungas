@@ -1,0 +1,10 @@
+@import "tailwindcss";
+
+/* Styling dasar tambahan untuk membuat background rapi */
+body {
+  background-color: #f9fafb;
+  color: #1f2937;
+  -webkit-font-smoothing: antialiased;
+  margin: 0;
+  padding: 0;
+}
