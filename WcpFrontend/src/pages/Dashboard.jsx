@@ -87,8 +87,8 @@ const Dashboard = () => {
 
     mqttClient.on('connect', () => {
       setMqttOnline(true);
-      mqttClient.subscribe('pt_top/dosing/site_a/data');
-      mqttClient.subscribe('pt_top/dosing/site_a/status');
+      mqttClient.subscribe('TOP/SHE/WCP4/data');
+      mqttClient.subscribe('TOP/SHE/WCP4/status');
     });
 
     mqttClient.on('reconnect', () => {
@@ -106,14 +106,14 @@ const Dashboard = () => {
     mqttClient.on('error', handleDisconnect);
 
     mqttClient.on('message', (topic, message) => {
-      if (topic === 'pt_top/dosing/site_a/status') {
+      if (topic === 'TOP/SHE/WCP4/status') {
         if (message.toString() === 'offline') {
           clearTimeout(espWatchdog.current);
           setEspOnline(false);
         } else if (message.toString() === 'online') {
           setEspOnline(true);
         }
-      } else if (topic === 'pt_top/dosing/site_a/data') {
+      } else if (topic === 'TOP/SHE/WCP4/data') {
         try {
           clearTimeout(espWatchdog.current);
           setEspOnline(true);
@@ -166,7 +166,7 @@ const Dashboard = () => {
   // --- KONTROL COMMANDS ---
   const sendCommand = (payloadObj) => {
     if (clientRef.current && mqttOnline) {
-      clientRef.current.publish('pt_top/dosing/site_a/command', JSON.stringify(payloadObj));
+      clientRef.current.publish('TOP/SHE/WCP4/command', JSON.stringify(payloadObj));
     }
   };
 

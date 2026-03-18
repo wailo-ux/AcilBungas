@@ -15,13 +15,13 @@ const MqttProvider = () => {
       setMqttOnline(true);
       
       // Subscribe ke topik yang ingin dipantau Frontend
-      client.subscribe('pt_top/dosing/site_a/status');
+      client.subscribe('TOP/SHE/WCP4/status');
       // Anda juga bisa menambahkan subscribe ke '.../data' jika ingin 
       // menampilkan data sensor real-time tanpa harus refresh halaman API
     });
 
     client.on('message', (topic, message) => {
-      if (topic === 'pt_top/dosing/site_a/status') {
+      if (topic === 'TOP/SHE/WCP4/status') {
         const status = message.toString();
         setEspOnline(status === 'online');
       }

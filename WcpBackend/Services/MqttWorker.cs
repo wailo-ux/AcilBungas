@@ -42,7 +42,7 @@ namespace WcpBackend.Services
                 var payload = e.ApplicationMessage.ConvertPayloadToString();
 
                 // Logika Status ESP32 Offline/Online
-                if (topic == "pt_top/dosing/site_a/status")
+                if (topic == "TOP/SHE/WCP4/status")
                 {
                     if (payload == "offline" && !_isOfflineAlerted)
                     {
@@ -57,7 +57,7 @@ namespace WcpBackend.Services
                 }
                 
                 // Logika Data Sensor Dosing & Hujan
-                if (topic == "pt_top/dosing/site_a/data")
+                if (topic == "TOP/SHE/WCP4/data")
                 {
                     try
                     {
@@ -136,12 +136,12 @@ namespace WcpBackend.Services
                 var factory = new MqttFactory();
                 
                 var subscribeOptions1 = factory.CreateSubscribeOptionsBuilder()
-                    .WithTopicFilter(f => f.WithTopic("pt_top/dosing/site_a/status"))
+                    .WithTopicFilter(f => f.WithTopic("TOP/SHE/WCP4/status"))
                     .Build();
                 await _mqttClient.SubscribeAsync(subscribeOptions1, stoppingToken);
 
                 var subscribeOptions2 = factory.CreateSubscribeOptionsBuilder()
-                    .WithTopicFilter(f => f.WithTopic("pt_top/dosing/site_a/data"))
+                    .WithTopicFilter(f => f.WithTopic("TOP/SHE/WCP4/data"))
                     .Build();
                 await _mqttClient.SubscribeAsync(subscribeOptions2, stoppingToken);
 
