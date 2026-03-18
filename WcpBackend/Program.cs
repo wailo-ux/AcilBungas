@@ -1,32 +1,40 @@
-using Microsoft.EntityFrameworkCore;
-using WcpBackend.Data;
-using WcpBackend.Services;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// 1. Tambahkan konfigurasi SQL Server
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-// 2. Daftarkan MQTT Worker sebagai Background Service
-builder.Services.AddHostedService<MqttWorker>();
-
-// 3. Tambahkan konfigurasi CORS agar React bisa menembak API ini
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowReactApp", policy =>
-    {
-        policy.WithOrigins("http://localhost:5173") // Port default Vite React
-              .AllowAnyHeader()
-              .AllowAnyMethod();
-    });
-});
 
 builder.Services.AddControllers();
 
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin()   // Boleh diakses dari IP/Port mana saja
+              .AllowAnyMethod()   // Boleh pakai metode GET, POST, PUT, DELETE
+              .AllowAnyHeader();  // Boleh kirim header apa saja
+    });
+});
+
 var app = builder.Build();
 
-app.UseCors("AllowReactApp");
+app.UseSwagger();
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "WCP 4 API v1");
+    // Mengubah rute utama. Jika Anda buka localhost:8888, langsung muncul Swagger
+    c.RoutePrefix = string.Empty; 
+});
+
+app.UseCors("AllowAll");
+
+app.UseAuthorization();
+
 app.MapControllers();
 
 app.Run();
