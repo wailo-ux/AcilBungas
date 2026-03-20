@@ -1,0 +1,24 @@
+-- Buat tabel Users
+CREATE TABLE Users (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    Username NVARCHAR(100) NOT NULL UNIQUE,
+    Password NVARCHAR(255) NOT NULL,
+    FullName NVARCHAR(255),
+    SecurityQuestion NVARCHAR(255),
+    SecurityAnswer NVARCHAR(255),
+    Role NVARCHAR(50),
+    Status NVARCHAR(50) DEFAULT 'pending'
+);
+
+-- Insert admin pertama
+INSERT INTO Users (Username, Password, FullName, Role, Status) 
+VALUES ('shetopsolid', 'turanggaA1', 'Super Admin HSE', 'spv', 'active');
+
+-- Buat tabel Rain Logs
+CREATE TABLE RainLogs (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    WaktuMulai NVARCHAR(100),
+    WaktuSelesai NVARCHAR(100),
+    DurasiMenit INT,
+    TotalHujan FLOAT
+);
