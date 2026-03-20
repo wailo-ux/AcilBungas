@@ -19,9 +19,10 @@ builder.Services.AddSwaggerGen();
 // Daftarkan CORS (Agar React tidak diblokir saat minta data)
 builder.Services.AddCors(options =>
 {
+    // Nama polisinya adalah "AllowReactApp"
     options.AddPolicy("AllowReactApp", policy =>
     {
-        policy.WithOrigins("http://localhost:2005","topswspu401:2005")   
+        policy.WithOrigins("http://localhost:2005","http://topswspu401:2005")   
               .AllowAnyMethod()   
               .AllowAnyHeader();  
     });
@@ -30,7 +31,6 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
-   
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
@@ -47,13 +47,16 @@ app.UseSwaggerUI(c =>
     c.RoutePrefix = string.Empty; 
 });
 
-// Nyalakan CORS (Wajib SEBELUM Authorization)
-app.UseCors("AllowAll");
+// 1. Nyalakan Routing (Penting untuk ditaruh sebelum CORS di IIS)
+app.UseRouting();
 
-// Nyalakan sistem otorisasi standar
+// 2. Nyalakan CORS (Panggil nama polisi yang BENAR)
+app.UseCors("AllowReactApp");
+
+// 3. Nyalakan sistem otorisasi standar
 app.UseAuthorization();
 
-// Arahkan URL (/api/...) ke Controller
+// 4. Arahkan URL (/api/...) ke Controller
 app.MapControllers();
 
 // Jalankan!

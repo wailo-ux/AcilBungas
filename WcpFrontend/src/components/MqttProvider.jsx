@@ -8,7 +8,7 @@ const MqttProvider = () => {
 
   useEffect(() => {
     // Konek ke Mosquitto via WebSocket di port yang baru (9999)
-    const client = mqtt.connect('ws://localhost:9999');
+    const client = mqtt.connect('ws://10.184.33.238:9999');
 
     client.on('connect', () => {
       console.log('React terhubung ke Mosquitto (WebSocket Port 9999)');
@@ -33,15 +33,15 @@ const MqttProvider = () => {
       setEspOnline(false);
     });
 
-    // Cleanup: Matikan koneksi jika user menutup halaman
+    
     return () => {
       if (client) {
         client.end();
       }
     };
-  }, []); // Array kosong artinya efek ini hanya dijalankan 1x saat website dibuka
+  }, []); 
 
-  return null; // Komponen ini tidak merender UI (tampilan) apa pun, hanya logika
+  return null; 
 };
 
-export default MqttProvider;
+export default MqttProvider;8

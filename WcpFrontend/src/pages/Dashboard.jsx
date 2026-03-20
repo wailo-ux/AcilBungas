@@ -73,7 +73,7 @@ const Dashboard = () => {
     setMqttOnline(false);
     setEspOnline(false);
     
-    const url = `ws://localhost:9999`; 
+    const url = `ws://10.184.33.238:9999`; 
     
     //Konfigurasi Auto-Reconnect
     const mqttClient = mqtt.connect(url, {
@@ -92,7 +92,7 @@ const Dashboard = () => {
     });
 
     mqttClient.on('reconnect', () => {
-      console.log('🔄 Jaringan kedip, menyambung ulang ke Mosquitto...');
+      console.log('Jaringan kedip, menyambung ulang ke Mosquitto...');
     });
 
     const handleDisconnect = () => {
