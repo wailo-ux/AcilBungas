@@ -8,7 +8,7 @@ const MqttProvider = () => {
 
   useEffect(() => {
     // Konek ke Mosquitto via WebSocket di port yang baru (9999)
-    const client = mqtt.connect('ws://10.184.33.238:9999');
+    const client = mqtt.connect('ws://10.167.250.46:9999');
 
     client.on('connect', () => {
       console.log('React terhubung ke Mosquitto (WebSocket Port 9999)');

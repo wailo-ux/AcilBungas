@@ -31,7 +31,7 @@ namespace WcpBackend.Services
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             var options = new MqttClientOptionsBuilder()
-                .WithTcpServer("localhost", 1883)
+                .WithTcpServer("10.167.250.46", 1883)
                 .WithClientId($"AspNetServer-{Guid.NewGuid()}")
                 .Build();
 
@@ -91,27 +91,29 @@ namespace WcpBackend.Services
                             Console.WriteLine("Log hujan disimpan ke SQL Server.");
                         }
 
-                        // B. Peringatan Tangki Utama (Mendeteksi false atau 0)
-                        bool isMain10Empty = false;
-                        if (data.TryGetProperty("main_10", out var m10))
-                        {
-                            if (m10.ValueKind == JsonValueKind.False) isMain10Empty = true;
-                            else if (m10.ValueKind == JsonValueKind.Number && m10.GetInt32() == 0) isMain10Empty = true;
-                        }
+                 // B. Peringatan Tangki Utama (Mendeteksi false atau 0)
+bool isMainTankEmpty = false;
 
-                        if (isMain10Empty)
-                        {
-                            if (!_isTankAlerted)
-                            {
-                                await SendTelegramAlert("*WCP 4 WARNING: TANGKI KRITIS!*\n\nVolume Tangki Utama (1200L) kosong.");
-                                _isTankAlerted = true;
-                            }
-                        }
-                        else
-                        {
-                            _isTankAlerted = false;
-                        }
-                    }
+// KITA UBAH KATA KUNCI JSON MENJADI "main_tank"
+if (data.TryGetProperty("main_tank", out var mt)) 
+{
+    if (mt.ValueKind == JsonValueKind.False) isMainTankEmpty = true;
+    else if (mt.ValueKind == JsonValueKind.Number && mt.GetInt32() == 0) isMainTankEmpty = true;
+}
+
+if (isMainTankEmpty)
+{
+    if (!_isTankAlerted)
+    {
+        await SendTelegramAlert("*WCP 4 WARNING: TANGKI KRITIS!*\n\nVolume Tangki Utama (1200L) kosong. Dosing Pump dimatikan.");
+        _isTankAlerted = true;
+    }
+}
+else
+{
+    _isTankAlerted = false;
+}
+}
                     catch (Exception ex)
                     {
                         Console.WriteLine($"Format MQTT Error: {ex.Message}");
